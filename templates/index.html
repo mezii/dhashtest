@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dHash Tool - Compare & Bypass</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 dHash Tool</h1>
+            <p>Compare images & bypass dhash detection</p>
+        </header>
+
+        <!-- Tab Navigation -->
+        <div class="tabs">
+            <button class="tab-button active" onclick="showTab('compare')">Compare Images</button>
+            <button class="tab-button" onclick="showTab('anti-dhash')">Anti-dHash Modifier</button>
+        </div>
+
+        <!-- Compare Tab -->
+        <div id="compareTab" class="tab-content active">
+        <div class="upload-section">
+            <div class="image-upload-box">
+                <h3>Image 1</h3>
+                <div class="drop-zone" id="dropZone1">
+                    <div class="drop-zone-content">
+                        <img src="" alt="Preview 1" id="preview1" class="preview-image" style="display: none;">
+                        <div id="placeholder1" class="placeholder">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                            <p>Click to upload or drag & drop</p>
+                            <p class="file-info">PNG, JPG, JPEG (max 16MB)</p>
+                        </div>
+                    </div>
+                </div>
+                <input type="file" id="fileInput1" accept="image/*" style="display: none;">
+                <button class="btn btn-secondary" onclick="clearImage(1)">Clear</button>
+            </div>
+
+            <div class="vs-divider">VS</div>
+
+            <div class="image-upload-box">
+                <h3>Image 2</h3>
+                <div class="drop-zone" id="dropZone2">
+                    <div class="drop-zone-content">
+                        <img src="" alt="Preview 2" id="preview2" class="preview-image" style="display: none;">
+                        <div id="placeholder2" class="placeholder">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                            <p>Click to upload or drag & drop</p>
+                            <p class="file-info">PNG, JPG, JPEG (max 16MB)</p>
+                        </div>
+                    </div>
+                </div>
+                <input type="file" id="fileInput2" accept="image/*" style="display: none;">
+                <button class="btn btn-secondary" onclick="clearImage(2)">Clear</button>
+            </div>
+        </div>
+
+        <div class="action-section">
+            <button class="btn btn-primary" id="compareBtn" onclick="compareImages()">
+                <span id="btnText">Compare Images</span>
+                <span id="btnLoader" class="loader" style="display: none;"></span>
+            </button>
+        </div>
+
+        <div class="result-section" id="resultSection" style="display: none;">
+            <h2>Comparison Results</h2>
+            <div class="result-card" id="resultCard">
+                <div class="result-status" id="resultStatus">
+                    <span class="status-icon" id="statusIcon">✓</span>
+                    <span class="status-text" id="statusText">Images are similar!</span>
+                </div>
+                <div class="result-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Similarity:</span>
+                        <span class="detail-value" id="similarityValue">0%</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Hamming Distance:</span>
+                        <span class="detail-value" id="hammingValue">0 bits</span>
+                    </div>
+                    <div class="similarity-bar">
+                        <div class="similarity-fill" id="similarityFill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <!-- End Compare Tab -->
+
+        <!-- Anti-dHash Tab -->
+        <div id="antiDhashTab" class="tab-content">
+            <div class="anti-dhash-section">
+                <h2>🛡️ Ultra Bypass - Defeat ALL Detection</h2>
+                <p><strong>Advanced Mode:</strong> Bypasses dHash, deep learning face recognition, and perceptual algorithms</p>
+                
+                <div class="feature-badges">
+                    <span class="badge">✓ dHash Bypass</span>
+                    <span class="badge">✓ Deep Learning Resistant</span>
+                    <span class="badge">✓ CNN Adversarial</span>
+                    <span class="badge">✓ Statistical Obfuscation</span>
+                </div>
+                
+                <div class="single-upload-box">
+                    <div class="drop-zone" id="dropZoneAnti">
+                        <div class="drop-zone-content">
+                            <img src="" alt="Preview" id="previewAnti" class="preview-image" style="display: none;">
+                            <div id="placeholderAnti" class="placeholder">
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <polyline points="21 15 16 10 5 21"></polyline>
+                                </svg>
+                                <p>Click to upload or drag & drop</p>
+                                <p class="file-info">PNG, JPG, JPEG (max 16MB)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="file" id="fileInputAnti" accept="image/*" style="display: none;">
+                    <button class="btn btn-secondary" onclick="clearAntiImage()">Clear</button>
+                </div>
+
+                <div class="action-section">
+                    <button class="btn btn-primary" id="modifyBtn" onclick="modifyImage()">
+                        <span id="modifyBtnText">🚀 Apply Ultra Bypass</span>
+                        <span id="modifyBtnLoader" class="loader" style="display: none;"></span>
+                    </button>
+                </div>
+
+                <div class="result-section" id="antiResultSection" style="display: none;">
+                    <h2>Modification Results</h2>
+                    <div class="result-card">
+                        <div class="result-status">
+                            <span class="status-icon">✓</span>
+                            <span class="status-text">Image successfully modified!</span>
+                        </div>
+                        <div class="result-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Original Hash:</span>
+                                <span class="detail-value" id="originalHashValue">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">New Hash:</span>
+                                <span class="detail-value" id="newHashValue">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Hamming Distance:</span>
+                                <span class="detail-value" id="antiHammingValue">0 bits</span>
+                            </div>
+                            <div class="download-section">
+                                <a id="downloadLink" href="#" class="btn btn-primary download-btn" download>
+                                    📥 Download Modified Image
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Anti-dHash Tab -->
+
+        <div class="info-section">
+            <h3>ℹ️ About Image Comparison</h3>
+            <p>
+                This tool uses <strong>dHash (Difference Hash)</strong> - a perceptual hashing algorithm that compares images 
+                based on their visual structure. Perfect for comparing photos of the same person or scene.
+            </p>
+            <ul>
+                <li><strong>Fast comparison</strong> - analyzes image gradients and patterns</li>
+                <li><strong>Works with similar photos</strong> - detects same person in similar poses/lighting</li>
+                <li><strong>Robust to minor changes</strong> - handles resize, compression, slight edits</li>
+                <li><strong>Simple & reliable</strong> - no complex setup needed</li>
+            </ul>
+            <p>
+                <strong>Hamming Distance:</strong> Number of different bits (0 = identical, 64 = completely different).
+                <br>
+                <strong>Threshold:</strong> ≥85% similarity means same person. Lower threshold for more lenient matching.
+            </p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
